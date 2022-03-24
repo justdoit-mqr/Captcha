@@ -10,6 +10,11 @@
 #include <QDebug>
 #include <QLabel>
 
+#define FONTSIZE 20    //宏定义字体大小
+#define FONTFAMILY "宋体"
+#define ROTATEANGLE 20  //验证码的最大旋转角度
+#define SIZEINCREMENT 12//部件大小相较字体实际所占空间大小的增量
+
 CaptchaBox::CaptchaBox(QWidget *parent)
     : QWidget(parent)
 {
@@ -109,7 +114,7 @@ void CaptchaBox::generateCaptcha(int count)
     /* 根据验证码的字符和所设字体，确定整个验证码区域的高度和宽度。
      * 整个区域的大小会略大于验证码字符实际的大小。
      * 注：因为字符的宽度除了与字体有关系外,可能还与字符本身有关系。为了避免不同的
-     * 验证码产生不同的宽度导致整个部件大小变化，这里以一个固定的英文字符(W,基本不上
+     * 验证码产生不同的宽度导致整个部件大小变化，这里以一个固定的英文字符(W,基本上
      * 是所有英文字符中最宽的)求宽
      */
     boxHeight = this->fontMetrics().height()+SIZEINCREMENT;
@@ -218,10 +223,11 @@ void CaptchaBox::shearForm(QPainter &painter)
  */
 void CaptchaBox::drawCaptcha(QPainter &painter)
 {
+    drawDisturb(painter);//先绘制干扰元素
+
     int num = colorSet.size();//获取颜色集的大小
     //根据验证码部件的大小均分每个字符所占空间,增量大小分配给部件的左右留白
     int charWidth = (boxWidth-SIZEINCREMENT)/captchaChars.size();
-    drawDisturb(painter);//先绘制干扰元素
     for(int i=0;i<captchaChars.size();i++)
     {
         painter.setPen(QColor(colorSet.at(qrand()%num)));//设置画笔为随机颜色
@@ -297,8 +303,7 @@ void CaptchaBox::mousePressEvent(QMouseEvent *event)
     {
         generateCaptcha();//生成新的验证码
         update();//重新绘制
-        QWidget::mousePressEvent(event);//执行重写前的鼠标按下的处理操作
     }
-    QWidget::mousePressEvent(event);
+    QWidget::mousePressEvent(event);//执行重写前的鼠标按下的处理操作
 }
 

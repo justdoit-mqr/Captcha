@@ -6,11 +6,6 @@
  */
 #ifndef CAPTCHABOX_H
 #define CAPTCHABOX_H
-#define CAPTCHACOUNT 4   //宏定义验证码的个数
-#define FONTSIZE 20    //宏定义字体大小
-#define FONTFAMILY "宋体"
-#define ROTATEANGLE 20  //验证码的最大旋转角度
-#define SIZEINCREMENT 12//部件大小相较字体实际所占空间大小的增量
 
 #include <QWidget>
 #include <QPainter>
@@ -23,7 +18,7 @@ class CaptchaBox : public QWidget
 public:
     explicit CaptchaBox(QWidget *parent = 0);
     ~CaptchaBox();
-    void generateCaptcha(int count=CAPTCHACOUNT);//生成随机验证码,默认4位
+    void generateCaptcha(int count=4);//生成随机验证码,默认4位
 
     bool checkCaptcha(QString text);//检验输入的验证码是否正确
 
